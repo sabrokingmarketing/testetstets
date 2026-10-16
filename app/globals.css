@@ -1,0 +1,277 @@
+@import "tailwindcss";
+
+/* ── Brand design system ─────────────────────────────────────
+   Every colour on the site comes from these tokens.
+   Primary orange is for buttons and small highlights only.
+   Contrast (WCAG AA):
+   - ink #0B0B0B on white           19.7 : 1
+   - body #3D3D3D on white          10.9 : 1
+   - muted #5E5E5E on white          6.5 : 1
+   - ink #0B0B0B on orange #FF6A13   6.9 : 1  (button text)
+   - orange #FF6A13 on ink #0B0B0B   6.9 : 1  (highlights on black)
+   - white on ink                   19.7 : 1
+   ─────────────────────────────────────────────────────────── */
+:root {
+  --primary: #ff6a13;
+  --primary-hover: #e85a05;
+  --primary-soft: #fff1e8;
+  --primary-tint: #ffd9c2;
+  --on-primary: #0b0b0b;
+
+  --secondary: #0b0b0b;
+  --secondary-hover: #282828;
+  --on-secondary: #ffffff;
+
+  --accent: #ff6a13;
+
+  --bg: #ffffff;
+  --surface: #f3f3f3;
+  --surface-strong: #e9e9e9;
+  --ink: #0b0b0b;
+  --body: #3d3d3d;
+  --muted: #5e5e5e;
+  --border: #e2e2e2;
+  --on-dark: #ffffff;
+  --on-dark-muted: #b8b8b8;
+
+  --radius-media: 14px;
+  --gutter: 20px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 32px;
+  }
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-tint: var(--primary-tint);
+  --color-on-primary: var(--on-primary);
+  --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-on-secondary: var(--on-secondary);
+  --color-accent: var(--accent);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-on-dark: var(--on-dark);
+  --color-on-dark-muted: var(--on-dark-muted);
+  --font-sans: var(--font-poppins), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Layout helpers ── */
+.wrap {
+  width: 100%;
+  max-width: 1360px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Display type: big, tight, confident */
+.display {
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+/* ── Buttons: one shape (pill) for the whole site ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  white-space: nowrap;
+  min-height: 52px;
+  padding: 0 1.6rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+.btn-dark {
+  background: var(--secondary);
+  color: var(--on-secondary);
+}
+.btn-dark:hover {
+  background: var(--secondary-hover);
+}
+.btn-light {
+  background: var(--surface);
+  color: var(--ink);
+}
+.btn-light:hover {
+  background: var(--surface-strong);
+}
+
+.link-arrow {
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--primary);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  transition: text-decoration-color 180ms ease;
+}
+.link-arrow:hover {
+  text-decoration-color: var(--ink);
+}
+
+/* ── Motion ──────────────────────────────────────────────────
+   Content is always visible without JavaScript. The "js" class
+   is added to <html> by a tiny inline script; only then do
+   elements start hidden and rise into view.
+   ─────────────────────────────────────────────────────────── */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 650ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 650ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--d, 0ms);
+}
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Signature move: the hero photo strip opens like a shutter */
+.js .shutter {
+  clip-path: inset(0 100% 0 0 round var(--radius-media));
+  animation: shutter 1100ms cubic-bezier(0.7, 0, 0.2, 1) 200ms forwards;
+}
+.js .shutter img {
+  transform: scale(1.12);
+  animation: settle 1500ms cubic-bezier(0.2, 0.7, 0.2, 1) 200ms forwards;
+}
+@keyframes shutter {
+  to {
+    clip-path: inset(0 0 0 0 round var(--radius-media));
+  }
+}
+@keyframes settle {
+  to {
+    transform: scale(1);
+  }
+}
+
+/* One slowly drifting picture */
+.drift {
+  animation: drift 18s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  from {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.1) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+/* Cycling highlighted word in the "who we work for" sentence */
+.cycle-word {
+  color: #8a8a8a; /* 3.5:1 on white — decorative texture, full ink when lit */
+  transition: color 400ms ease;
+}
+.cycle-word.is-lit {
+  color: var(--ink);
+}
+
+/* Without JavaScript, show every reason's text */
+html:not(.js) .reason-body {
+  display: block !important;
+}
+
+/* Gallery prints: white frame, straighten on hover */
+.print {
+  transition:
+    transform 220ms ease,
+    z-index 0ms;
+}
+.print:hover,
+.print:focus-within {
+  transform: rotate(0deg) scale(1.03) !important;
+  z-index: 30;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .js .shutter,
+  .js .shutter img {
+    animation: none;
+    clip-path: inset(0 0 0 0 round var(--radius-media));
+    transform: none;
+  }
+  .drift {
+    animation: none;
+  }
+  .cycle-word {
+    transition: none;
+  }
+  .btn,
+  .print {
+    transition: none;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
