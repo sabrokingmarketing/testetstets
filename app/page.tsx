@@ -2,20 +2,34 @@ import Image from "next/image";
 import Link from "next/link";
 import { site, whatsappLink, defaultWhatsAppMessage } from "@/content/site";
 import { CycleWords } from "@/components/cycle-words";
-import { ReasonsZoom } from "@/components/reasons-zoom";
+import { Reasons } from "@/components/reasons";
+import { HowItWorks } from "@/components/how-it-works";
 import { ProblemPicker } from "@/components/problem-picker";
 import { WhatsAppIcon } from "@/components/whatsapp-float";
 import { InlineVideo } from "@/components/inline-video";
+import { Check } from "lucide-react";
 
 const d = (ms: number) => ({ ["--d" as string]: `${ms}ms` });
 
 export default function Home() {
   const { hero, contact, stats, services, faqs } = site;
 
+  // Lets Google show your FAQ answers directly in search results.
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       {/* ── HERO: the sentence is the layout ── */}
-      <section className="flex min-h-[calc(100svh-64px)] flex-col justify-center pb-12 pt-8 md:min-h-[calc(100svh-72px)] md:pb-16">
+      <section className="pb-20 pt-10 md:pb-28 md:pt-20 lg:pt-24">
         <div className="wrap">
           <h1 className="display text-ink">
             <span className="sr-only">{hero.srHeadline}</span>
@@ -28,7 +42,8 @@ export default function Home() {
                     src="/images/hero.jpg"
                     alt=""
                     fill
-                    priority
+                    fetchPriority="high"
+                    loading="eager"
                     sizes="(min-width: 768px) 55vw, 100vw"
                     className="object-cover object-[50%_42%]"
                   />
@@ -42,10 +57,10 @@ export default function Home() {
           </h1>
 
           <div className="mt-10 flex flex-col gap-8 md:mt-14 lg:flex-row lg:items-end lg:justify-between">
-            <p className="max-w-[44ch] text-[18px] leading-[1.5] text-body md:text-[20px]" data-reveal style={d(500)}>
+            <p className="max-w-[44ch] text-[18px] leading-[1.5] text-body md:text-[20px]" data-reveal style={d(150)}>
               {hero.sub}
             </p>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-4" data-reveal style={d(650)}>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-4" data-reveal style={d(250)}>
               <a
                 href={whatsappLink(defaultWhatsAppMessage)}
                 target="_blank"
@@ -60,26 +75,23 @@ export default function Home() {
               </a>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ── TRUST STRIP ── */}
-      <section aria-labelledby="trust-heading" className="bg-secondary text-on-dark">
-        <h2 id="trust-heading" className="sr-only">
-          Why You Can Trust Us
-        </h2>
-        <div className="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 md:grid-cols-4 md:py-24">
-          {[
-            { big: stats.happyClients, small: "Happy clients" },
-            { big: stats.yearsInService, small: "Year in service" },
-            { big: "Local", small: "Based in Krugersdorp" },
-            { big: "SA", small: "We work across South Africa" },
-          ].map((s, i) => (
-            <div key={s.small} data-reveal style={d(i * 80)}>
-              <p className="display text-[clamp(48px,6.4vw,104px)] text-primary">{s.big}</p>
-              <p className="mt-3 text-[16px] text-on-dark md:text-[18px]">{s.small}</p>
-            </div>
-          ))}
+          {/* Proof on the first screen */}
+          <ul
+            className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-[16px] font-medium text-ink md:mt-10"
+            aria-label="Why you can trust us"
+            data-reveal
+            style={d(350)}
+          >
+            {[`${stats.happyClients} happy clients`, `${stats.yearsInService} year in service`, "Based in Krugersdorp", "Working across South Africa"].map((t) => (
+              <li key={t} className="flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-soft">
+                  <Check size={14} strokeWidth={2.75} className="text-primary-strong" aria-hidden="true" />
+                </span>
+                {t}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -94,7 +106,7 @@ export default function Home() {
             data-reveal
           >
             We fix leaks and blocked drains{" "}
-            <InlineVideo src="/images/tap-loop.webm" poster="/images/tap-poster.jpg" label="Water running from a tap" />, burst pipes and new
+            <InlineVideo webm="/images/tap-loop.webm" mp4="/images/tap-loop.mp4" poster="/images/tap-poster.jpg" label="Water running from a tap" />, burst pipes and new
             piping <InlinePic src="/images/work-6.jpg" alt="Gloved hands fitting a pipe connector" />, and broken
             toilets <InlinePic src="/images/work-3.jpg" alt="Plumber fitting a toilet" pos="50% 70%" />.
           </p>
@@ -123,8 +135,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── WHY CHOOSE US: one frame, three distances ── */}
-      <ReasonsZoom />
+      {/* ── WHY CHOOSE US: all three reasons at once ── */}
+      <Reasons />
+
+      {/* ── HOW IT WORKS: three plain steps ── */}
+      <HowItWorks />
 
       {/* ── GALLERY: prints laid beside the headline ── */}
       <section aria-labelledby="work-heading" className="relative overflow-hidden bg-[#ECEAE6]">

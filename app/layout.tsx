@@ -5,6 +5,7 @@ import { site } from "@/content/site";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { WhatsAppFloat } from "@/components/whatsapp-float";
+import { MobileActionBar } from "@/components/mobile-action-bar";
 import { RevealObserver } from "@/components/reveal";
 
 const poppins = Poppins({
@@ -17,7 +18,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "Plumber In Krugersdorp | Plumbing, Piping & Toilets | Plumber Near Me",
+    default: "Plumber In Krugersdorp | Plumber Near Me",
     template: "%s | Plumber Near Me",
   },
   description: site.description,
@@ -78,7 +79,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }}
         />
       </head>
-      <body className="flex min-h-svh flex-col">
+      <body className="flex min-h-svh flex-col pb-[76px] lg:pb-0">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:text-on-dark"
@@ -91,6 +92,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <Footer />
         <WhatsAppFloat />
+        <MobileActionBar />
         <RevealObserver />
       </body>
     </html>

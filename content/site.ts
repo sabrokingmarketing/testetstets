@@ -73,6 +73,22 @@ export const site = {
     },
   ],
 
+  // "How It Works" steps on the home page.
+  steps: [
+    {
+      title: "Message Us",
+      text: "WhatsApp or call us. Tell us what's wrong and where, and send a photo if you can.",
+    },
+    {
+      title: "Get A Quote",
+      text: "We look at the problem and give you a quote, so you know where you stand.",
+    },
+    {
+      title: "We Fix It",
+      text: "We come out and sort out the leak, pipe or toilet properly.",
+    },
+  ],
+
   services: [
     {
       slug: "plumbing",

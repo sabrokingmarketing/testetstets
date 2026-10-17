@@ -22,7 +22,7 @@ export function PageHero({
         </p>
         {image ? (
           <div className="shutter relative mt-14 aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-media)] bg-surface md:mt-20 md:aspect-[21/9]">
-            <Image src={image} alt={alt ?? ""} fill priority sizes="100vw" className="object-cover" />
+            <Image src={image} alt={alt ?? ""} fill fetchPriority="high" loading="eager" sizes="100vw" className="object-cover" />
           </div>
         ) : null}
       </div>

@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Menu, Phone, X } from "lucide-react";
 import { Logo } from "./logo";
 import { site, whatsappLink, defaultWhatsAppMessage } from "@/content/site";
 
@@ -15,6 +16,8 @@ const links = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const isActive = (href: string) => !href.includes("#") && pathname === href;
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -30,22 +33,26 @@ export function Header() {
           <Logo />
         </Link>
 
-        <nav aria-label="Main" className="hidden items-center gap-8 lg:flex">
+        <nav aria-label="Main" className="hidden items-center gap-6 lg:flex xl:gap-8">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="text-[14px] font-medium text-ink transition-colors hover:text-muted"
+              aria-current={isActive(l.href) ? "page" : undefined}
+              className={`text-[16px] font-medium text-ink underline-offset-[10px] transition-colors hover:text-muted ${
+                isActive(l.href) ? "underline decoration-primary decoration-[3px]" : ""
+              }`}
             >
               {l.label}
             </Link>
           ))}
-          <a href={site.contact.phoneLink} className="text-[14px] font-semibold text-ink">
+          <a href={site.contact.phoneLink} className="inline-flex items-center gap-2 text-[16px] font-semibold text-ink hover:text-muted">
+            <Phone size={17} strokeWidth={2} aria-hidden="true" />
             {site.contact.phoneDisplay}
           </a>
           <a
             href={whatsappLink(defaultWhatsAppMessage)}
-            className="btn btn-primary !min-h-[44px] !px-5 !text-[14px]"
+            className="btn btn-primary !min-h-[46px] !px-5"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -66,14 +73,15 @@ export function Header() {
       </div>
 
       {open && (
-        <div id="mobile-menu" className="fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col bg-bg md:top-[72px] lg:hidden">
+        <div id="mobile-menu" className="fixed inset-x-0 bottom-0 top-16 z-[45] flex flex-col bg-bg md:top-[72px] lg:hidden">
           <nav aria-label="Mobile" className="wrap flex flex-1 flex-col pt-6">
             {links.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="display py-3 text-[44px] text-ink"
+                aria-current={isActive(l.href) ? "page" : undefined}
+                className={`display py-3 text-[44px] ${isActive(l.href) ? "text-primary-strong" : "text-ink"}`}
               >
                 {l.label}
               </Link>

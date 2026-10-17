@@ -4,9 +4,10 @@ import { site, whatsappLink, defaultWhatsAppMessage } from "@/content/site";
 import { ProblemPicker } from "@/components/problem-picker";
 import { WhatsAppIcon } from "@/components/whatsapp-float";
 import { PageCta } from "@/components/page-parts";
+import { CopyButton } from "@/components/copy-button";
 
 export const metadata: Metadata = {
-  title: "Contact Us | WhatsApp Or Call A Plumber In Krugersdorp",
+  title: "Contact A Plumber In Krugersdorp",
   description:
     "WhatsApp or call Plumber Near Me on 066 220 2498, or email kelvin@sabroking.co.za. Local plumbers in Krugersdorp, working across South Africa.",
   alternates: { canonical: "/contact" },
@@ -23,7 +24,7 @@ export default function ContactPage() {
       href: whatsappLink(defaultWhatsAppMessage),
       external: true,
     },
-    { icon: <Phone size={24} strokeWidth={1.5} />, label: "Phone", value: c.phoneDisplay, href: c.phoneLink },
+    { icon: <Phone size={24} strokeWidth={1.5} />, label: "Phone", value: c.phoneDisplay, href: c.phoneLink, copy: c.phoneDisplay },
     { icon: <Mail size={24} strokeWidth={1.5} />, label: "Email", value: c.email, href: `mailto:${c.email}` },
     {
       icon: <MapPin size={24} strokeWidth={1.5} />,
@@ -50,15 +51,15 @@ export default function ContactPage() {
               The fastest way to reach us is WhatsApp. Tell us what&apos;s wrong and where, and we&apos;ll get back to you.
             </p>
 
-            <dl className="mt-12 flex flex-col gap-7">
+            <ul className="mt-12 flex flex-col gap-7" aria-label="Contact details">
               {rows.map((r) => (
-                <div key={r.label} className="flex gap-4">
+                <li key={r.label} className="flex gap-4">
                   <span className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-surface text-ink">
                     {r.icon}
                   </span>
-                  <div>
-                    <dt className="text-[14px] font-medium text-muted">{r.label}</dt>
-                    <dd className="mt-0.5 text-[18px] font-medium text-ink">
+                  <div className="min-w-0">
+                    <p className="text-[14px] font-medium text-muted">{r.label}</p>
+                    <div className="mt-0.5 text-[18px] font-medium text-ink">
                       {r.href && r.linkText ? (
                         <>
                           {r.value}
@@ -82,11 +83,16 @@ export default function ContactPage() {
                       ) : (
                         r.value
                       )}
-                    </dd>
+                    </div>
+                    {r.copy ? (
+                      <div className="mt-3">
+                        <CopyButton text={r.copy} label="Copy number" />
+                      </div>
+                    ) : null}
                   </div>
-                </div>
+                </li>
               ))}
-            </dl>
+            </ul>
           </div>
 
           <div className="rounded-[24px] bg-surface p-6 md:col-span-6 md:col-start-7 md:self-start md:p-10">

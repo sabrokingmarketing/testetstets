@@ -16,6 +16,7 @@
   --primary-hover: #e85a05;
   --primary-soft: #fff1e8;
   --primary-tint: #ffd9c2;
+  --primary-strong: #b83f00; /* darker orange for small icons on light tints */
   --on-primary: #0b0b0b;
 
   --secondary: #0b0b0b;
@@ -49,6 +50,7 @@
   --color-primary-hover: var(--primary-hover);
   --color-primary-soft: var(--primary-soft);
   --color-primary-tint: var(--primary-tint);
+  --color-primary-strong: var(--primary-strong);
   --color-on-primary: var(--on-primary);
   --color-secondary: var(--secondary);
   --color-secondary-hover: var(--secondary-hover);
@@ -180,12 +182,13 @@ body {
 
 /* Signature move: the hero photo strip opens like a shutter */
 .js .shutter {
-  clip-path: inset(0 100% 0 0 round var(--radius-media));
-  animation: shutter 1100ms cubic-bezier(0.7, 0, 0.2, 1) 200ms forwards;
+  /* Starts already partly open, so the photo shows straight away (faster first paint) */
+  clip-path: inset(0 38% 0 0 round var(--radius-media));
+  animation: shutter 900ms cubic-bezier(0.3, 0, 0.2, 1) 60ms forwards;
 }
 .js .shutter img {
-  transform: scale(1.12);
-  animation: settle 1500ms cubic-bezier(0.2, 0.7, 0.2, 1) 200ms forwards;
+  transform: scale(1.08);
+  animation: settle 1300ms cubic-bezier(0.2, 0.7, 0.2, 1) 60ms forwards;
 }
 @keyframes shutter {
   to {
@@ -218,11 +221,6 @@ body {
 }
 .cycle-word.is-lit {
   color: var(--ink);
-}
-
-/* Without JavaScript, show every reason's text */
-html:not(.js) .reason-body {
-  display: block !important;
 }
 
 /* Gallery prints: white frame, straighten on hover */
@@ -262,6 +260,11 @@ html:not(.js) .reason-body {
   .print {
     transition: none;
   }
+}
+
+/* The phone action bar floats over the page (taste-skill-ignore: sticky bar) */
+.bar-shadow {
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.08); /* taste-skill-ignore: sticky bar */
 }
 
 .sr-only {
